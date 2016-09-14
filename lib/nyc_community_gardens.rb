@@ -14,21 +14,14 @@ module NycCommunityGardens
 
     def self.all
       gardens_array = Unirest.get("https://data.cityofnewyork.us/resource/yes4-7zbb.json").body
-      gardens = []
-      gardens_array.each do |garden|
-        gardens << garden
-      end
-      gardens
+      create_gardens(gardens_array)
     end
 
     def self.where(search_term)
       key = search_term.keys.first.to_s
       value = search_term.values.first
       gardens_array = Unirest.get("https://data.cityofnewyork.us/resource/yes4-7zbb.json?#{key}=#{value}").body
-      gardens = []
-      gardens_array.each do |garden|
-        gardens << garden
-      end
+      create_gardens(gardens_array)
     end
 
     def self.find_by(search_term)
@@ -36,6 +29,13 @@ module NycCommunityGardens
       value = search_term.values.first
       garden = Unirest.get("https://data.cityofnewyork.us/resource/yes4-7zbb.json?#{key}=#{value}").body.first
       CommunityGarden.new(garden)
+    end
+
+    def self.create_gardens(gardens_array)
+      gardens = []
+      gardens_array.each do |garden|
+        gardens << garden
+      end
     end
 
   end
