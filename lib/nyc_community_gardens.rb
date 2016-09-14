@@ -21,9 +21,9 @@ module NycCommunityGardens
       gardens
     end
 
-    def self.where
-      key = search_term.keys.to_s
-      value = search_term.values
+    def self.where(search_term)
+      key = search_term.keys.first.to_s
+      value = search_term.values.first
       gardens_array = Unirest.get("https://data.cityofnewyork.us/resource/yes4-7zbb.json?#{key}=#{value}").body
       gardens = []
       gardens_array.each do |garden|
